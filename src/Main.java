@@ -7,6 +7,87 @@ import java.util.Stack;
 
 public class Main {
 
+    //将队元素 设置为实现可比较的
+    private class Freq implements Comparable<Freq> {
+        public int e, freq;
+
+        public Freq(int e, int freq) {
+            this.e = e;
+            this.freq = freq;
+        }
+
+        @Override
+        public int compareTo(Freq o) {
+            if (this.freq < o.freq) {
+                return -1;
+            } else if (this.freq > o.freq) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    //为PriorityQueue设置 比较器  改变大根堆小根堆  定义比较器的之后 可以不实现可比较的
+    //写成匿名类
+    private class FreqComparator implements Comparator<Freq> {
+
+        @Override
+        public int compare(Freq o1, Freq o2) {
+            return o1.freq - o2.freq;
+        }
+    }
+
+    public List<Integer> topKFrequent(int[] nums, int k) {
+
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int num : nums) {
+            if (map.containsKey(num)) {
+                map.put(num, map.get(num) + 1);
+            } else {
+                map.put(num, 1);
+            }
+        }
+
+        //传入比较器对象 看完成堆类型的定义
+//        PriorityQueue<Freq> queue = new PriorityQueue<>(new FreqComparator());
+
+
+        /*PriorityQueue<Freq> queue = new PriorityQueue<>(new Comparator<Freq>() {
+            @Override
+            public int compare(Freq o1, Freq o2) {
+                return o1.freq - o2.freq;
+            }
+        });*/
+
+        /*PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return map.get(o1) - map.get(o2);
+            }
+        });*/
+
+        //使用lambda表达式
+        PriorityQueue<Integer> queue = new PriorityQueue<>(
+                (o1, o2) -> map.get(o1)-map.get(o2)
+        );
+        for (int key : map.keySet()) {
+            Freq freq = new Freq(key, map.get(key));
+            if (queue.size() < k) {
+                queue.add(key);
+            } else if (map.get(key) > map.get(queue.peek())) {
+//                queue.remove()
+                queue.poll();
+                queue.add(key);
+            }
+        }
+        List<Integer> list = new ArrayList<>(k);
+        while (!queue.isEmpty()) {
+            list.add(queue.poll();
+        }
+        return list;
+    }
+
     public String toLowerCase(String str) {
         return str.toLowerCase();
     }
@@ -320,15 +401,18 @@ class Node {
 //        }
 //        System.out.println("end");
 
-        int n = 10000000;
-        Random random = new Random();
-        Integer[] testData = new Integer[n];
-        for (int i = 0; i < n; i++) {
-            testData[i] = random.nextInt(Integer.MAX_VALUE);
-        }
-        double time1 = testHeap(testData, true);
-        double time2 = testHeap(testData, false);
-        System.out.println("time1 true : "+time1);
-        System.out.println("time2 false : "+time2);
+//        int n = 10000000;
+//        Random random = new Random();
+//        Integer[] testData = new Integer[n];
+//        for (int i = 0; i < n; i++) {
+//            testData[i] = random.nextInt(Integer.MAX_VALUE);
+//        }
+//        double time1 = testHeap(testData, true);
+//        double time2 = testHeap(testData, false);
+//        System.out.println("time1 true : "+time1);
+//        System.out.println("time2 false : "+time2);
+        int[] nums = {4,1,-1,2,-1,2,3};
+        List<Integer> list = new Main().topKFrequent(nums, 2);
+        System.out.println(list);
     }
 }
