@@ -1,11 +1,196 @@
 import maxHeap.MaxHeap;
-import tree.BST;
+import segmentTree.Merger;
+import segmentTree.SegmentTree;
 
-import javax.xml.soap.Node;
 import java.util.*;
+import java.util.LinkedList;
 import java.util.Stack;
 
 public class Main {
+
+
+
+
+    public int arrayPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int ret = 0;
+        for (int i = 0; i < nums.length; i+=2) {
+            ret += nums[i];
+        }
+        return ret;
+    }
+
+//    private int[] sum;
+//
+//    private int[] data;
+//
+//    public NumArray(int[] nums) {
+//
+//        data = new int[nums.length];
+//        for (int i = 0; i < data.length; i ++) {
+//            data[i] = nums[i];
+//        }
+//
+//        sum = new int[nums.length + 1];
+//        sum[0] = 0;
+//        for (int i = 1; i < sum.length; i++) {
+//            sum[i] = sum[i - 1] + nums[i - 1];
+//        }
+//    }
+//
+//    public void update(int index, int val) {
+//        data[index] = val;
+//        for (int i = index + 1; i < data.length; i++) {
+//            sum[i] = sum[i - 1] + data[i - 1];
+//        }
+//
+//    }
+//
+//    public int sumRange(int i, int j) {
+//        return sum[j + 1] - sum[i];
+//    }
+
+
+
+
+//    private int[] sum;
+//
+//    public NumArray(int[] nums) {
+//        sum = new int[nums.length + 1];
+//        sum[0] = 0;
+//        for (int i = 1; i < sum.length; i++) {
+//            sum[i] = sum[i - 1] + nums[i - 1];
+//        }
+//    }
+//
+//    public int sumRange(int i, int j) {
+//        return sum[j + 1] - sum[i];
+//    }
+//
+    private SegmentTree<Integer> segmentTree;
+
+    public NumArray(int[] nums) {
+        if (nums.length > 0) {
+            Integer[] data = new Integer[nums.length];
+            for (int i = 0; i < nums.length; i++) {
+                data[i] = nums[i];
+            }
+            segmentTree = new SegmentTree<Integer>(data, (a, b) -> a + b);
+        }
+    }
+    public void update(int i, int val) {
+        segmentTree.set(i, val);
+    }
+
+    public int sumRange(int i, int j) {
+        if (segmentTree == null) {
+            throw new IllegalArgumentException("error");
+        }
+        return segmentTree.query(i, j);
+    }
+
+
+    public String simplifyPath(String path) {
+        //双端队列
+//        ArrayDeque<Integer> aDeque=new ArrayDeque<Integer>();
+        Queue<String> queue = new LinkedList<>();
+        String[] s = path.split("/");
+        for (String i : s) {
+            if (i.equals(""))
+                continue;
+            if (i.equals(".")) {
+
+            } else if (i.equals("..")) {
+                if (!queue.isEmpty()) {
+                    ((LinkedList<String>) queue).removeLast();
+                }
+            } else {
+                ((LinkedList<String>) queue).addLast("/"+i);
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        if (queue.isEmpty())
+            queue.add("/");
+        while (!queue.isEmpty()) {
+            stringBuilder.append(((LinkedList<String>) queue).removeFirst());
+        }
+        return stringBuilder.toString();
+    }
+
+
+    public String frequencySort(String s) {
+        HashMap<Character, Integer> hashMap = new HashMap<>();
+        PriorityQueue<Character> queue = new PriorityQueue(
+                (a, b) -> -(hashMap.get(a) - hashMap.get(b))
+        );
+        for (int i = 0; i < s.length(); i++) {
+            if (hashMap.containsKey(s.charAt(i))) {
+                hashMap.put(s.charAt(i), hashMap.get(s.charAt(i)) + 1);
+            } else {
+                hashMap.put(s.charAt(i), 1);
+            }
+            if (!queue.contains(s.charAt(i))) {
+                queue.add(s.charAt(i));
+            } else {
+                queue.remove(s.charAt(i));
+                queue.add(s.charAt(i));
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char c = queue.remove();
+            for (int i = 0; i < hashMap.get(c); i++) {
+                stringBuilder.append(c);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    // todo 比较器
+
+    public int[][] kClosest(int[][] points, int K) {
+        int[][] ret = new int[K][2];
+        PriorityQueue<int[]> queue = new PriorityQueue<int[]>(
+                (int[] a, int[] b) -> -(int)(Math.pow(a[0], 2)+Math.pow(a[1], 2)-Math.pow(b[0], 2)-Math.pow(b[1], 2))
+        );
+        for (int i = 0; i < points.length; i++) {
+            int a = (int)(Math.pow(points[i][0], 2) + Math.pow(points[i][1], 2));
+            if (queue.size() < K) {
+                queue.add(points[i]);
+            } else if ((int)(Math.pow(points[i][0], 2)+Math.pow(points[i][1], 2)) < (int)(Math.pow(queue.peek()[0], 2)+Math.pow(queue.peek()[1], 2))) {
+                queue.remove();
+                queue.add(points[i]);
+            }
+        }
+        for (int i = 0; i < K; i++) {
+            ret[i] = queue.remove();
+        }
+        return ret;
+    }
+
+
+//    private PriorityQueue<Integer> queue;
+//    private int k;
+//
+//    public KthLargest(int k, int[] nums) {
+//        this.k = k;
+//        queue = new PriorityQueue();
+//        for (int num : nums) {
+//            add(num);
+//        }
+//    }
+//
+//    public int add(int val) {
+//        if (queue.size() < k) {
+//            queue.add(val);
+//        } else {
+//            if (val > queue.peek()) {
+//                queue.remove();
+//                queue.add(val);
+//            }
+//        }
+//        return queue.peek();
+//    }
 
     //将队元素 设置为实现可比较的
     private class Freq implements Comparable<Freq> {
@@ -83,7 +268,7 @@ public class Main {
         }
         List<Integer> list = new ArrayList<>(k);
         while (!queue.isEmpty()) {
-            list.add(queue.poll();
+            list.add(queue.poll());
         }
         return list;
     }
@@ -411,8 +596,17 @@ class Node {
 //        double time2 = testHeap(testData, false);
 //        System.out.println("time1 true : "+time1);
 //        System.out.println("time2 false : "+time2);
-        int[] nums = {4,1,-1,2,-1,2,3};
-        List<Integer> list = new Main().topKFrequent(nums, 2);
-        System.out.println(list);
+//        Main a = new Main();
+//        System.out.println(a.frequencySort("aaacc"));
+//        System.out.println(a.frequencySort("tree"));
+//        System.out.println(a.frequencySort("aaasffrrrr"));
+//        a.simplifyPath("/a/./b/../../c/");
+        Integer[] nums = {5, 6, 9, 8, 7, 3, 10, 99};
+        SegmentTree<Integer> segmentTree = new SegmentTree<>(nums,
+                (a, b) -> Math.max(a, b)
+        );
+        System.out.println(segmentTree.query(3, 7));
+
+
     }
 }
