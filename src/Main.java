@@ -1,6 +1,7 @@
 import maxHeap.MaxHeap;
 import segmentTree.Merger;
 import segmentTree.SegmentTree;
+import trie.Trie;
 
 import java.util.*;
 import java.util.LinkedList;
@@ -69,15 +70,15 @@ public class Main {
 //
     private SegmentTree<Integer> segmentTree;
 
-    public NumArray(int[] nums) {
-        if (nums.length > 0) {
-            Integer[] data = new Integer[nums.length];
-            for (int i = 0; i < nums.length; i++) {
-                data[i] = nums[i];
-            }
-            segmentTree = new SegmentTree<Integer>(data, (a, b) -> a + b);
-        }
-    }
+//    public NumArray(int[] nums) {
+//        if (nums.length > 0) {
+//            Integer[] data = new Integer[nums.length];
+//            for (int i = 0; i < nums.length; i++) {
+//                data[i] = nums[i];
+//            }
+//            segmentTree = new SegmentTree<Integer>(data, (a, b) -> a + b);
+//        }
+//    }
     public void update(int i, int val) {
         segmentTree.set(i, val);
     }
@@ -601,11 +602,28 @@ class Node {
 //        System.out.println(a.frequencySort("tree"));
 //        System.out.println(a.frequencySort("aaasffrrrr"));
 //        a.simplifyPath("/a/./b/../../c/");
-        Integer[] nums = {5, 6, 9, 8, 7, 3, 10, 99};
-        SegmentTree<Integer> segmentTree = new SegmentTree<>(nums,
-                (a, b) -> Math.max(a, b)
-        );
-        System.out.println(segmentTree.query(3, 7));
+//        Integer[] nums = {5, 6, 9, 8, 7, 3, 10, 99};
+//        SegmentTree<Integer> segmentTree = new SegmentTree<>(nums,
+//                (a, b) -> Math.max(a, b)
+//        );
+//        System.out.println(segmentTree.query(3, 7));
+
+        Trie trie = new Trie();
+        trie.add("at");
+        trie.add("and");
+        trie.add("an");
+        trie.add("add");
+        System.out.println(trie.search("a"));
+        System.out.println(trie.search(".at"));
+        trie.add("bat");
+        System.out.println(trie.search(".at"));
+        System.out.println(trie.search("an."));
+        System.out.println( trie.search("a.d."));
+        System.out.println(trie.search("b."));
+        System.out.println(trie.search("a.d"));
+        System.out.println(trie.search("."));
+
+
 
 
     }
