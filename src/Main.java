@@ -2,6 +2,7 @@ import maxHeap.MaxHeap;
 import segmentTree.Merger;
 import segmentTree.SegmentTree;
 import trie.Trie;
+import unionFind.*;
 
 import java.util.*;
 import java.util.LinkedList;
@@ -534,7 +535,28 @@ class Node {
         }
         System.out.println("end");
 
-        return (endTime - startTime) / 1000000000.0;
+        return (endTime - startTime) / 100000000.0;
+    }
+
+    private static double testUF(UF uf, int m) {
+
+
+
+        int size = uf.getSize();
+        Random random = new Random();
+        long startTime = System.nanoTime();
+        for (int i = 0; i < m; i++) {
+            int a = random.nextInt(size);
+            int b = random.nextInt(size);
+            uf.unionElements(a, b);
+        }
+        for (int i = 0; i < m; i++) {
+            int a = random.nextInt(size);
+            int b = random.nextInt(size);
+            uf.isConnected(a, b);
+        }
+        long endTime = System.nanoTime();
+        return (endTime - startTime)/1000000000.0;
     }
 
     public static void main(String[] args) {
@@ -608,23 +630,42 @@ class Node {
 //        );
 //        System.out.println(segmentTree.query(3, 7));
 
-        Trie trie = new Trie();
-        trie.add("at");
-        trie.add("and");
-        trie.add("an");
-        trie.add("add");
-        System.out.println(trie.search("a"));
-        System.out.println(trie.search(".at"));
-        trie.add("bat");
-        System.out.println(trie.search(".at"));
-        System.out.println(trie.search("an."));
-        System.out.println( trie.search("a.d."));
-        System.out.println(trie.search("b."));
-        System.out.println(trie.search("a.d"));
-        System.out.println(trie.search("."));
+//        Trie trie = new Trie();
+//        trie.add("at");
+//        trie.add("and");
+//        trie.add("an");
+//        trie.add("add");
+//        System.out.println(trie.search("a"));
+//        System.out.println(trie.search(".at"));
+//        trie.add("bat");
+//        System.out.println(trie.search(".at"));
+//        System.out.println(trie.search("an."));
+//        System.out.println( trie.search("a.d."));
+//        System.out.println(trie.search("b."));
+//        System.out.println(trie.search("a.d"));
+//        System.out.println(trie.search("."));
 
-
-
-
+//        int[] a = new int[9];
+//        int b = 0;
+//        a[++b] = ++b;
+//        for (int i = 0; i < a.length; i++) {
+//            System.out.println(i + ": " + a[i]);
+//        }
+        int size = 10000000;
+        int m = 10000000;
+//        UnionFion1 uf1 = new UnionFion1(size);
+//        System.out.println("1"+testUF(uf1, m));
+//        UnionFion2 uf2 = new UnionFion2(size);
+//        System.out.println("1"+testUF(uf2, m));
+//        UnionFion3 uf3 = new UnionFion3(size);
+//        System.out.println("1:   "+testUF(uf3, m));
+        UnionFion4 uf4 = new UnionFion4(size);
+        System.out.println("4:   "+testUF(uf4, m));
+        UnionFion5 uf5 = new UnionFion5(size);
+        System.out.println("5:   "+testUF(uf5, m));
+        UnionFion6 uf6 = new UnionFion6(size);
+        System.out.println("5:   "+testUF(uf6, m));
     }
+
+
 }
