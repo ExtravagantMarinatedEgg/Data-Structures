@@ -1,3 +1,4 @@
+import demo.Median;
 import maxHeap.MaxHeap;
 import segmentTree.Merger;
 import segmentTree.SegmentTree;
@@ -651,20 +652,63 @@ class Node {
 //        for (int i = 0; i < a.length; i++) {
 //            System.out.println(i + ": " + a[i]);
 //        }
-        int size = 10000000;
-        int m = 10000000;
+//        int size = 10000000;
+//        int m = 10000000;
 //        UnionFion1 uf1 = new UnionFion1(size);
 //        System.out.println("1"+testUF(uf1, m));
 //        UnionFion2 uf2 = new UnionFion2(size);
 //        System.out.println("1"+testUF(uf2, m));
 //        UnionFion3 uf3 = new UnionFion3(size);
 //        System.out.println("1:   "+testUF(uf3, m));
-        UnionFion4 uf4 = new UnionFion4(size);
-        System.out.println("4:   "+testUF(uf4, m));
-        UnionFion5 uf5 = new UnionFion5(size);
-        System.out.println("5:   "+testUF(uf5, m));
-        UnionFion6 uf6 = new UnionFion6(size);
-        System.out.println("5:   "+testUF(uf6, m));
+//        UnionFion4 uf4 = new UnionFion4(size);
+//        System.out.println("4:   "+testUF(uf4, m));
+//        UnionFion5 uf5 = new UnionFion5(size);
+//        System.out.println("5:   "+testUF(uf5, m));
+//        UnionFion6 uf6 = new UnionFion6(size);
+//        System.out.println("5:   "+testUF(uf6, m));
+//        int a = 0;
+//        boolean b = a%2 == 0;
+//        System.out.println(b);
+        Median median = new Median();
+        Random random = new Random();
+        ArrayList<Integer> arrayList = new ArrayList();
+        for (int i = 0; i < 10; i++) {
+            int a = random.nextInt(100);
+            arrayList.add(a);
+            median.add(a);
+        }
+
+        int[] arr1 = new int[arrayList.size()];
+        for (int i = 0; i < arrayList.size(); i++) {
+            arr1[i] = arrayList.get(i);
+        }
+        Arrays.sort(arr1);
+        for (int i = 0; i < arr1.length; i++) {
+            System.out.print(arr1[i]+", ");
+        }
+
+        System.out.println();
+        System.out.println(median.getMedian());
+
+
+        for (int i = 0; i < 5; i++) {
+            int a = random.nextInt(100);
+            arrayList.add(a);
+            median.add(a);
+        }
+
+        arr1 = new int[arrayList.size()];
+        for (int i = 0; i < arrayList.size(); i++) {
+            arr1[i] = arrayList.get(i);
+        }
+        Arrays.sort(arr1);
+        for (int i = 0; i < arr1.length; i++) {
+            System.out.print(arr1[i]+", ");
+        }
+
+        System.out.println();
+        System.out.println(median.getMedian());
+
     }
 
 
