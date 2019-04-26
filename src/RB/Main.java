@@ -1,5 +1,7 @@
 package RB;
 
+import hashTable.HashTable;
+
 import java.util.ArrayList;
 
 public class Main {
@@ -72,6 +74,26 @@ public class Main {
 
             time = (endTime - startTime) / 1000000000.0;
             System.out.println("rb: " + time + " s");
+
+
+            // Test hashTable
+            startTime = System.nanoTime();
+
+            HashTable<String, Integer> hashTable = new HashTable<>(131071);
+            for (String word : words) {
+                if (hashTable.contains(word))
+                    hashTable.set(word, hashTable.get(word) + 1);
+                else
+                    hashTable.add(word, 1);
+            }
+
+            for(String word: words)
+                hashTable.contains(word);
+
+            endTime = System.nanoTime();
+
+            time = (endTime - startTime) / 1000000000.0;
+            System.out.println("hash: " + time + " s");
         }
 
         System.out.println();
